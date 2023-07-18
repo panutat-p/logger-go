@@ -30,13 +30,13 @@ func CustomEncoder(config zapcore.EncoderConfig) (zapcore.Encoder, error) {
 }
 
 func main() {
-	err := zap.RegisterEncoder("json", CustomEncoder)
+	err := zap.RegisterEncoder("custom", CustomEncoder)
 	if err != nil {
 		fmt.Println("🔴 Zap encoder err:", err)
 		os.Exit(1)
 	}
 	config := zap.NewDevelopmentConfig()
-	config.Encoding = "json"
+	config.Encoding = "custom"
 	config.EncoderConfig = zapcore.EncoderConfig{
 		TimeKey:        "time",
 		MessageKey:     "message",
