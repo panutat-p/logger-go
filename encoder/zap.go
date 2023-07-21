@@ -70,6 +70,10 @@ func (e *CustomEncoder) MaskFields(data any) any {
 	case reflect.Map:
 		newData := reflect.MakeMapWithSize(value.Type(), value.Len())
 		for _, key := range value.MapKeys() {
+			if key.Kind() == reflect.String && e.IsSensitive(key.String()) {
+				newData.SetMapIndex(key, reflect.ValueOf(e.MaskSensitiveField(key.String())))
+				continue
+			}
 			val := value.MapIndex(key)
 			if val.Kind() == reflect.Ptr && !val.IsNil() {
 				val = val.Elem()
