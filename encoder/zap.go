@@ -103,7 +103,7 @@ func (e *CustomEncoder) MaskFields(data any) any {
 			}
 			newData.Field(i).Set(reflect.ValueOf(e.MaskFields(field.Interface())))
 			fieldName := value.Type().Field(i).Name
-			if strings.Contains(strings.ToLower(fieldName), "password") {
+			if field.Kind() == reflect.String && strings.Contains(strings.ToLower(fieldName), "password") {
 				newData.Field(i).SetString("[MASKED]")
 			}
 		}
